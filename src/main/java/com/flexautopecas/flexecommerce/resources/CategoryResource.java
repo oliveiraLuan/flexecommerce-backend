@@ -1,5 +1,6 @@
 package com.flexautopecas.flexecommerce.resources;
 
+import com.flexautopecas.flexecommerce.dto.CategoryDTO;
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class CategoryResource {
     @Autowired
     private CategoryService categoryService;
     @GetMapping
-    public ResponseEntity<List<Category>> findAll(){
-        List<Category> categories = categoryService.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll(){
+        List<CategoryDTO> categories = categoryService.findAll();
         return ResponseEntity.ok(categories);
     }
 }
