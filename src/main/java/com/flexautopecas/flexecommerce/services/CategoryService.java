@@ -29,4 +29,12 @@ public class CategoryService {
         Category category = optional.orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada"));
         return new CategoryDTO(category);
     }
+
+    @Transactional
+    public CategoryDTO insert(CategoryDTO dto) {
+        Category category = new Category();
+        category.setName(dto.getName());
+        category = repository.save(category);
+        return new CategoryDTO(category);
+    }
 }
