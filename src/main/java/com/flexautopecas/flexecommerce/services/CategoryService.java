@@ -4,6 +4,7 @@ import com.flexautopecas.flexecommerce.dto.CategoryDTO;
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.repositories.CategoryRepository;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,5 +37,16 @@ public class CategoryService {
         category.setName(dto.getName());
         category = repository.save(category);
         return new CategoryDTO(category);
+    }
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO category) {
+        try{
+            Category entity = repository.getReferenceById(id);
+            entity.setName(category.getName());
+            entity = repository.save(entity);
+            return new CategoryDTO(entity);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Categoria com id informado não foi encontrada");
+        }
     }
 }
