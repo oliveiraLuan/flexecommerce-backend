@@ -3,9 +3,11 @@ package com.flexautopecas.flexecommerce.services;
 import com.flexautopecas.flexecommerce.dto.CategoryDTO;
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.repositories.CategoryRepository;
+import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +49,16 @@ public class CategoryService {
             return new CategoryDTO(entity);
         } catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Categoria com id informado não foi encontrada");
+        }
+    }
+
+    public void delete(Long id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Categoria com id informado não foi encontrada");
+        } try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Erro de integridade referencial, a categoria está associada a um produto");
         }
     }
 }

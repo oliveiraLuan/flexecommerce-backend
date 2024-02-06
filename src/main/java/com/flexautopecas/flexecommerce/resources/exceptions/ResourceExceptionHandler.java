@@ -1,5 +1,6 @@
 package com.flexautopecas.flexecommerce.resources.exceptions;
 
+import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,5 +17,12 @@ public class ResourceExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new StandardError(Instant.now(), HttpStatus.NOT_FOUND.value(), servlet.getRequestURI(), e.getMessage(), "Resource not found"));
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> databaseException(DatabaseException e, HttpServletRequest servletRequest){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new StandardError(Instant.now(), HttpStatus.BAD_REQUEST.value(), servletRequest.getRequestURI(), e.getMessage(), "Database violation"));
     }
 }
