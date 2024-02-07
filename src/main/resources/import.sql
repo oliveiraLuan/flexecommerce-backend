@@ -1,3 +1,3 @@
-INSERT INTO tb_category(name) VALUES ('Pneus');
-INSERT INTO tb_category(name) VALUES ('Correia dentada');
-INSERT INTO tb_category(name) VALUES ('Embreagens');
+INSERT INTO tb_category(name, created_At) VALUES ('Pneus', NOW());
+INSERT INTO tb_category(name, created_At) VALUES ('Correia dentada', NOW());
+INSERT INTO tb_category(name, created_At) VALUES ('Embreagens', NOW());
