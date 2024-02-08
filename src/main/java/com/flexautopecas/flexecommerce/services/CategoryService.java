@@ -8,6 +8,8 @@ import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundExcep
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +23,9 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll(){
-        List<Category> categories = repository.findAll();
-        return categories.stream().map(category -> new CategoryDTO(category)).collect(Collectors.toList());
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
+        Page<Category> categories = repository.findAll(pageRequest);
+        return categories.map(category -> new CategoryDTO(category));
     }
 
     @Transactional(readOnly = true)
