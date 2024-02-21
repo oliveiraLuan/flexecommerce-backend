@@ -15,7 +15,7 @@ public class ProductDTO implements Serializable {
     private Double price;
     private String imgUrl;
     private Instant date;
-    Set<CategoryDTO> categories = new HashSet<>();
+    Set<Category> categories = new HashSet<>();
 
     public ProductDTO(){
 
@@ -39,7 +39,7 @@ public class ProductDTO implements Serializable {
         this.date = product.getDate();
     }
 
-    public ProductDTO(Product product, Set<CategoryDTO> categories){
+    public ProductDTO(Product product, Set<Category> categories){
         this(product);
         categories
                 .forEach(category -> this.categories.add(category));
@@ -93,7 +93,7 @@ public class ProductDTO implements Serializable {
         this.date = date;
     }
 
-    public Set<CategoryDTO> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 }

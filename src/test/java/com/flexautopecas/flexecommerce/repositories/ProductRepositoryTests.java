@@ -1,6 +1,7 @@
 package com.flexautopecas.flexecommerce.repositories;
 
 import com.flexautopecas.flexecommerce.entities.Product;
+import com.flexautopecas.flexecommerce.tests.ProductFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,5 +27,14 @@ public class ProductRepositoryTests {
 
         Optional<Product> result = repository.findById(existingId);
         Assertions.assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void insertShouldSaveProductWhenIdNull(){
+        Product product = ProductFactory.createProduct();
+        product.setId(null);
+
+        product = repository.save(product);
+        Assertions.assertNotNull(product.getId());
     }
 }
