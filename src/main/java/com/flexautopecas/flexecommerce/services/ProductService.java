@@ -60,6 +60,9 @@ public class ProductService {
     }
 
     public void delete(Long id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Produto com id informado não encontrado");
+        }
         try {
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e){
