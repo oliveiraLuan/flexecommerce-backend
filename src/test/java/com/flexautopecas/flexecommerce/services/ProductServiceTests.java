@@ -2,17 +2,15 @@ package com.flexautopecas.flexecommerce.services;
 
 import com.flexautopecas.flexecommerce.repositories.ProductRepository;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.mockito.Mockito.doNothing;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
@@ -29,13 +27,13 @@ public class ProductServiceTests {
         nonExistingId = 33L;
         dependentId = 1L;
         existingId = 2L;
-        Mockito.when(productRepository.existsById(existingId)).thenReturn(true);
-        Mockito.when(productRepository.existsById(nonExistingId)).thenReturn(false);
-        Mockito.when(productRepository.existsById(dependentId)).thenReturn(true);
+        when(productRepository.existsById(existingId)).thenReturn(true);
+        when(productRepository.existsById(nonExistingId)).thenReturn(false);
+        when(productRepository.existsById(dependentId)).thenReturn(true);
     }
     @Test
     public void deleteByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist(){
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             productService.delete(nonExistingId);
         });
     }
