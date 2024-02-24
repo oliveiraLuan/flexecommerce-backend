@@ -1,18 +1,19 @@
 package com.flexautopecas.flexecommerce.services;
 
 import com.flexautopecas.flexecommerce.repositories.ProductRepository;
+import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
@@ -32,6 +33,8 @@ public class ProductServiceTests {
         when(productRepository.existsById(existingId)).thenReturn(true);
         when(productRepository.existsById(nonExistingId)).thenReturn(false);
         when(productRepository.existsById(dependentId)).thenReturn(true);
+
+        doThrow(DataIntegrityViolationException.class).when(productRepository).deleteById(dependentId);
     }
     @Test
     public void deleteByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist(){
@@ -44,6 +47,13 @@ public class ProductServiceTests {
     public void deleteByIdShouldDoNothingWhenIdExists(){
         assertDoesNotThrow(() -> {
             productService.delete(existingId);
+        });
+    }
+
+    @Test
+    public void deleteByIdShouldThrowDatabaseExceptionWhenDependentId(){
+        assertThrows(DatabaseException.class, () -> {
+           productService.delete(dependentId);
         });
     }
 }
