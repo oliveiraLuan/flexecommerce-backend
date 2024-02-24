@@ -9,7 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -38,6 +40,10 @@ public class ProductServiceTests {
         });
     }
 
-
-
+    @Test
+    public void deleteByIdShouldDoNothingWhenIdExists(){
+        assertDoesNotThrow(() -> {
+            productService.delete(existingId);
+        });
+    }
 }
