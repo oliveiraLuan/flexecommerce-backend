@@ -1,10 +1,12 @@
 package com.flexautopecas.flexecommerce.services;
 
+import com.flexautopecas.flexecommerce.dto.ProductDTO;
 import com.flexautopecas.flexecommerce.entities.Product;
 import com.flexautopecas.flexecommerce.repositories.ProductRepository;
 import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import com.flexautopecas.flexecommerce.tests.ProductFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -61,6 +65,16 @@ public class ProductServiceTests {
 
         doThrow(DataIntegrityViolationException.class).when(productRepository).deleteById(dependentId);
     }
+
+    @Test
+    public void findAllPagedShouldReturnPage(){
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<ProductDTO> page = productService.findAllPaged(pageable);
+
+        Assertions.assertNotNull(page);
+        verify(productRepository, times(1)).findAll(pageable);
+    }
+
     @Test
     public void deleteByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist(){
         assertThrows(ResourceNotFoundException.class, () -> {
