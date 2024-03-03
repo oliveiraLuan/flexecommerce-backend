@@ -1,5 +1,6 @@
 package com.flexautopecas.flexecommerce.resources;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flexautopecas.flexecommerce.dto.ProductDTO;
 import com.flexautopecas.flexecommerce.services.ProductService;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
@@ -17,8 +18,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductResource.class)
@@ -37,6 +40,9 @@ public class ProductResourceTests {
 
     private Long nonExistingId;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     public void setup(){
         existingId = 1L;
@@ -46,6 +52,9 @@ public class ProductResourceTests {
         when(productService.findAllPaged(any())).thenReturn(page);
         when(productService.findByID(existingId)).thenReturn(productDTO);
         when(productService.findByID(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+
+        when(productService.update(eq(existingId), any())).thenReturn(productDTO);
+        when(productService.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
     }
 
     @Test
@@ -61,6 +70,9 @@ public class ProductResourceTests {
         ResultActions result = mockMvc.perform(
                 get("/products/{id}", existingId).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk());
+        result.andExpect(jsonPath("$.id").exists());
+        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.description").exists());
     }
 
     @Test
@@ -69,5 +81,32 @@ public class ProductResourceTests {
                 get("/products/{id}", nonExistingId)
                         .accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isNotFound());
+    }
+    @Test
+    public void updateShouldReturnUpdatedProductWhenIdExists() throws Exception {
+
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions resultActions = mockMvc.perform(put("/products/{id}", existingId)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody));
+
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("$.id").exists());
+        resultActions.andExpect(jsonPath("$.name").exists());
+        resultActions.andExpect(jsonPath("$.description").exists());
+    }
+
+    @Test
+    public void updateShouldThrowNotFoundExceptionWhenIdEDoesNotExists() throws Exception {
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
+
+        ResultActions resultActions = mockMvc.perform(put("/products/{id}", nonExistingId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody));
+
+        resultActions.andExpect(status().isNotFound());
     }
 }
