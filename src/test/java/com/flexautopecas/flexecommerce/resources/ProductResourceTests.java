@@ -3,6 +3,7 @@ package com.flexautopecas.flexecommerce.resources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flexautopecas.flexecommerce.dto.ProductDTO;
 import com.flexautopecas.flexecommerce.services.ProductService;
+import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
 import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import com.flexautopecas.flexecommerce.tests.ProductFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +41,8 @@ public class ProductResourceTests {
 
     private Long nonExistingId;
 
+    private Long dependentId;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -55,6 +58,10 @@ public class ProductResourceTests {
 
         when(productService.update(eq(existingId), any())).thenReturn(productDTO);
         when(productService.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
+
+        doNothing().when(productService).delete(existingId);
+        doThrow(ResourceNotFoundException.class).when(productService).delete(nonExistingId);
+        doThrow(DatabaseException.class).when(productService).delete(dependentId);
     }
 
     @Test
