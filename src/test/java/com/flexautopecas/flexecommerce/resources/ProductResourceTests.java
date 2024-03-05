@@ -1,6 +1,5 @@
 package com.flexautopecas.flexecommerce.resources;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flexautopecas.flexecommerce.dto.ProductDTO;
 import com.flexautopecas.flexecommerce.services.ProductService;
@@ -133,5 +132,21 @@ public class ProductResourceTests {
         resultActions.andExpect(jsonPath("$.id").exists());
         resultActions.andExpect(jsonPath("$.name").exists());
         resultActions.andExpect(jsonPath("$.description").exists());
+    }
+
+    @Test
+    public void deleteShouldReturnNoContentWhenIdExists() throws Exception {
+        ResultActions resultActions = mockMvc.perform(
+                        delete("/products/{id}", existingId)
+                        .accept(MediaType.APPLICATION_JSON));
+        resultActions.andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void deleteShouldReturnNotFoundWhenIdDoesNotExists() throws Exception {
+        ResultActions resultActions = mockMvc.perform(
+                delete("/products/{id}", nonExistingId)
+                        .accept(MediaType.APPLICATION_JSON));
+        resultActions.andExpect(status().isNotFound());
     }
 }
