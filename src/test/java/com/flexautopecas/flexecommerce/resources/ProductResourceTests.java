@@ -96,19 +96,22 @@ public class ProductResourceTests {
 
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
+        String expectedName = productDTO.getName();
+        String expectedDescription = productDTO.getDescription();
+
         ResultActions resultActions = mockMvc.perform(put("/products/{id}", existingId)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody));
 
         resultActions.andExpect(status().isOk());
-        resultActions.andExpect(jsonPath("$.id").exists());
-        resultActions.andExpect(jsonPath("$.name").exists());
-        resultActions.andExpect(jsonPath("$.description").exists());
+        resultActions.andExpect(jsonPath("$.id").value(existingId));
+        resultActions.andExpect(jsonPath("$.name").value(expectedName));
+        resultActions.andExpect(jsonPath("$.description").value(expectedDescription));
     }
 
     @Test
-    public void updateShouldThrowNotFoundExceptionWhenIdEDoesNotExists() throws Exception {
+    public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
         ResultActions resultActions = mockMvc.perform(put("/products/{id}", nonExistingId)
