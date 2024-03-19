@@ -68,6 +68,9 @@ public class Category implements Serializable {
         updatedAt = Instant.now();
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
