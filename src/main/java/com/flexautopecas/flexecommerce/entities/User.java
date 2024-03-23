@@ -52,7 +52,9 @@ public class User implements Serializable {
     public String getLastName() {
         return lastName;
     }
-
+    public Set<Role> getRoles() {
+        return roles;
+    }
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

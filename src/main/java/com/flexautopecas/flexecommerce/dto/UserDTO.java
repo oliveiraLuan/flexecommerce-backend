@@ -1,7 +1,11 @@
 package com.flexautopecas.flexecommerce.dto;
 
+import com.flexautopecas.flexecommerce.entities.Role;
+import com.flexautopecas.flexecommerce.entities.User;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserDTO {
     private Long id;
@@ -9,10 +13,21 @@ public class UserDTO {
     private String lastName;
     private String email;
 
-    private Set<RoleDTO> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public UserDTO(){
 
+    }
+
+    public UserDTO(User entity){
+        id = entity.getId();
+        firstName = entity.getFirstName();
+        lastName = entity.getLastName();
+        email = entity.getEmail();
+    }
+
+    public UserDTO(User entity, Set<Role> roles){
+        this(entity);
     }
 
     public UserDTO(Long id, String firstName, String lastName, String email) {
@@ -54,10 +69,7 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Set<RoleDTO> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
-    }
-    public void addRole(RoleDTO roleDTO){
-        roles.add(roleDTO);
     }
 }
