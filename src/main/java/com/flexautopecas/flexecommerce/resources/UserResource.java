@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +20,11 @@ public class UserResource {
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable){
         Page<UserDTO> users = userService.findAll(pageable);
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto){
+        dto = userService.insert(dto);
+        return ResponseEntity.ok(dto);
     }
 }

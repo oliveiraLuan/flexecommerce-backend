@@ -1,6 +1,7 @@
 package com.flexautopecas.flexecommerce.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class User implements Serializable {
     @Column
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id")
