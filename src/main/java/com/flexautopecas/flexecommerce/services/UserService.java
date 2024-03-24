@@ -6,7 +6,10 @@ import com.flexautopecas.flexecommerce.entities.Role;
 import com.flexautopecas.flexecommerce.entities.User;
 import com.flexautopecas.flexecommerce.repositories.RoleRepository;
 import com.flexautopecas.flexecommerce.repositories.UserRepository;
+import com.flexautopecas.flexecommerce.services.exceptions.DatabaseException;
+import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -46,5 +49,16 @@ public class UserService {
             entity.getRoles().add(role);
         }
         return entity;
+    }
+
+    public void deleteById(Long id) {
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException("Usuário com id informado não encontrado.");
+        }
+        try{
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Erro de integridade referencial");
+        }
     }
 }
