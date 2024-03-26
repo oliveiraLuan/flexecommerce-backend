@@ -28,6 +28,12 @@ public class UserResource {
         return ResponseEntity.ok(dto);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @PathVariable Long id){
+        dto = userService.update(dto, id);
+        return ResponseEntity.ok(dto);
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         userService.deleteById(id);
