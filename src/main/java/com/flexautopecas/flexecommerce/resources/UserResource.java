@@ -1,6 +1,7 @@
 package com.flexautopecas.flexecommerce.resources;
 
 import com.flexautopecas.flexecommerce.dto.UserDTO;
+import com.flexautopecas.flexecommerce.dto.UserInsertDTO;
 import com.flexautopecas.flexecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +24,9 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto){
-        dto = userService.insert(dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
+        UserDTO response = userService.insert(dto);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/{id}")

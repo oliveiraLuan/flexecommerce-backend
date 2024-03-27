@@ -2,6 +2,7 @@ package com.flexautopecas.flexecommerce.services;
 
 import com.flexautopecas.flexecommerce.dto.RoleDTO;
 import com.flexautopecas.flexecommerce.dto.UserDTO;
+import com.flexautopecas.flexecommerce.dto.UserInsertDTO;
 import com.flexautopecas.flexecommerce.entities.Role;
 import com.flexautopecas.flexecommerce.entities.User;
 import com.flexautopecas.flexecommerce.repositories.RoleRepository;
@@ -33,9 +34,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO insert(UserDTO dto){
+    public UserDTO insert(UserInsertDTO dto){
         User entity = new User();
         entity = copyDTOtoEntity(entity, dto);
+        entity.setPassword(dto.getPassword());
         entity = repository.save(entity);
         return new UserDTO(entity);
     }
