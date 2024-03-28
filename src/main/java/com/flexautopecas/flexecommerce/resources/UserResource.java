@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,14 @@ public class UserResource {
     @PostMapping
     public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
         UserDTO response = userService.insert(dto);
-        return ResponseEntity.ok(response);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.getId())
+                .toUri();
+        return ResponseEntity
+                .created(uri)
+                .body(response);
     }
 
     @PutMapping(value = "/{id}")
