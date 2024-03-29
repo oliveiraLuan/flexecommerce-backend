@@ -2,6 +2,7 @@ package com.flexautopecas.flexecommerce.dto;
 
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.entities.Product;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -10,9 +11,14 @@ import java.util.Set;
 
 public class ProductDTO implements Serializable {
     private Long id;
+
+    @NotBlank(message = "{product.name-validation}")
     private String name;
+    @NotBlank(message = "{product.description-validation}")
     private String description;
+    @NotBlank(message = "{product.price-validation}")
     private Double price;
+    @NotBlank(message = "{product.imgUrl-validation}")
     private String imgUrl;
     private Instant date;
     Set<Category> categories = new HashSet<>();
