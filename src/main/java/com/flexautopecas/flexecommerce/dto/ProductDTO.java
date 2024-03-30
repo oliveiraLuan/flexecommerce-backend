@@ -3,6 +3,8 @@ package com.flexautopecas.flexecommerce.dto;
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -18,10 +20,12 @@ public class ProductDTO implements Serializable {
     private String name;
     @NotBlank(message = "{product.description-validation}")
     private String description;
-    @NotBlank(message = "{product.price-validation}")
+    @Positive(message = "{product.price-validation}")
     private Double price;
     @NotBlank(message = "{product.imgUrl-validation}")
     private String imgUrl;
+
+    @PastOrPresent(message = "{product.date-validation}")
     private Instant date;
     Set<Category> categories = new HashSet<>();
 
