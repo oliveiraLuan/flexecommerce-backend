@@ -5,6 +5,7 @@ import com.flexautopecas.flexecommerce.services.exceptions.ResourceNotFoundExcep
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,9 +29,17 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardError> validateException(MethodArgumentNotValidException e, HttpServletRequest servletRequest){
-        return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(new StandardError(Instant.now(), HttpStatus.UNPROCESSABLE_ENTITY.value(), servletRequest.getRequestURI(), e.getMessage(), "Validate exception"));
+    public ResponseEntity<ValidationError> validateException(MethodArgumentNotValidException e, HttpServletRequest servletRequest){
+        ValidationError validationError = new ValidationError();
+        validationError.setTimestamp(Instant.now());
+        validationError.setMessage(e.getMessage());
+        validationError.setError("Erro de validação");
+        validationError.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        validationError.setPath(servletRequest.getRequestURI());
+
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()){
+            validationError.addError(new FieldMessage(fieldError.getField(), fieldError.getDefaultMessage()));
+        }
+        return ResponseEntity.unprocessableEntity().body(validationError);
     }
 }
