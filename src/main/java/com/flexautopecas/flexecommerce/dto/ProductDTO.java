@@ -3,6 +3,7 @@ package com.flexautopecas.flexecommerce.dto;
 import com.flexautopecas.flexecommerce.entities.Category;
 import com.flexautopecas.flexecommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,6 +14,7 @@ public class ProductDTO implements Serializable {
     private Long id;
 
     @NotBlank(message = "{product.name-validation}")
+    @Size(min = 3, max = 60)
     private String name;
     @NotBlank(message = "{product.description-validation}")
     private String description;

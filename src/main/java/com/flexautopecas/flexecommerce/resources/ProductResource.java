@@ -2,6 +2,7 @@ package com.flexautopecas.flexecommerce.resources;
 
 import com.flexautopecas.flexecommerce.dto.ProductDTO;
 import com.flexautopecas.flexecommerce.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,7 @@ public class ProductResource {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO> insert(@RequestBody @Valid ProductDTO dto){
         dto = productService.insert(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -41,7 +42,7 @@ public class ProductResource {
         return ResponseEntity.created(uri).body(dto);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable  Long id, @RequestBody ProductDTO product){
+    public ResponseEntity<ProductDTO> update(@PathVariable  Long id, @RequestBody @Valid ProductDTO product){
         product = productService.update(id, product);
         return ResponseEntity.ok(product);
     }
