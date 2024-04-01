@@ -2,6 +2,7 @@ package com.flexautopecas.flexecommerce.dto;
 
 import com.flexautopecas.flexecommerce.entities.Role;
 import com.flexautopecas.flexecommerce.entities.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +10,11 @@ import java.util.stream.Collectors;
 
 public class UserDTO {
     private Long id;
+    @NotBlank(message = "{user.name-validation}")
     private String firstName;
+    @NotBlank(message = "{user.lastName-validation}")
     private String lastName;
+    @NotBlank(message = "{user.email-validation}")
     private String email;
 
     private Set<RoleDTO> roles = new HashSet<>();

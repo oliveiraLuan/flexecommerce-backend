@@ -3,6 +3,7 @@ package com.flexautopecas.flexecommerce.resources;
 import com.flexautopecas.flexecommerce.dto.UserDTO;
 import com.flexautopecas.flexecommerce.dto.UserInsertDTO;
 import com.flexautopecas.flexecommerce.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
+    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto){
         UserDTO response = userService.insert(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -39,7 +40,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @PathVariable Long id){
+    public ResponseEntity<UserDTO> update(@RequestBody @Valid UserDTO dto, @PathVariable Long id){
         dto = userService.update(dto, id);
         return ResponseEntity.ok(dto);
     }
