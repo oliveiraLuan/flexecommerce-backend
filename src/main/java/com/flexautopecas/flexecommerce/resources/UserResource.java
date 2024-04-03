@@ -2,6 +2,7 @@ package com.flexautopecas.flexecommerce.resources;
 
 import com.flexautopecas.flexecommerce.dto.UserDTO;
 import com.flexautopecas.flexecommerce.dto.UserInsertDTO;
+import com.flexautopecas.flexecommerce.dto.UserUpdateDTO;
 import com.flexautopecas.flexecommerce.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,9 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@RequestBody @Valid UserDTO dto, @PathVariable Long id){
-        dto = userService.update(dto, id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO dto, @PathVariable Long id){
+        UserDTO response = userService.update(dto, id);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -3,6 +3,7 @@ package com.flexautopecas.flexecommerce.services;
 import com.flexautopecas.flexecommerce.dto.RoleDTO;
 import com.flexautopecas.flexecommerce.dto.UserDTO;
 import com.flexautopecas.flexecommerce.dto.UserInsertDTO;
+import com.flexautopecas.flexecommerce.dto.UserUpdateDTO;
 import com.flexautopecas.flexecommerce.entities.Role;
 import com.flexautopecas.flexecommerce.entities.User;
 import com.flexautopecas.flexecommerce.repositories.RoleRepository;
@@ -59,7 +60,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(UserDTO dto, Long id) {
+    public UserDTO update(UserUpdateDTO dto, Long id) {
         User entity = new User();
         if(!repository.existsById(id)){
             throw new ResourceNotFoundException("Usuário com id informado não encontrado.");
