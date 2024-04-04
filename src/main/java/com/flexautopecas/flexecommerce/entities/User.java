@@ -76,6 +76,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    public Boolean hasRole(String roleName){
+        for(Role role : roles){
+            if(role.getAuthority().equals(roleName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
