@@ -5,7 +5,7 @@ INSERT INTO tb_category(name, created_At) VALUES ('Embreagens', NOW());
 INSERT INTO tb_product(date, name, description, img_url, price) VALUES (NOW(), 'Kit correia dentada', 'Kit contendo a correia dentada e o tensor', '', 200.0)
 
 INSERT INTO tb_user(first_name, last_name, email, password) VALUES ('Luan', 'de Oliveira', 'luan@gmail.com', '$2a$10$jnbsiQy9/.KKhoXEe90KzuKMlLQ/OmO/MUD1Zq99IyOsxs69ORZe2')
-INSERT INTO tb_user(first_name, last_name, email, password) VALUES ('Fabio', 'Cafe', 'maria@gmail.com', '$2a$10$jnbsiQy9/.KKhoXEe90KzuKMlLQ/OmO/MUD1Zq99IyOsxs69ORZe2');
+INSERT INTO tb_user(first_name, last_name, email, password) VALUES ('Fabio', 'Cafe', 'fabio@gmail.com', '$2a$10$jnbsiQy9/.KKhoXEe90KzuKMlLQ/OmO/MUD1Zq99IyOsxs69ORZe2');
 
 INSERT INTO tb_role (authority) VALUES ('ROLE_OPERATOR');
 INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
