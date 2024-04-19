@@ -30,8 +30,8 @@ public class ProductResource {
         return ResponseEntity.ok(product);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<ProductDTO> insert(@RequestBody @Valid ProductDTO dto){
         dto = productService.insert(dto);
         URI uri = ServletUriComponentsBuilder
@@ -41,14 +41,16 @@ public class ProductResource {
                 .toUri();
         return ResponseEntity.created(uri).body(dto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<ProductDTO> update(@PathVariable  Long id, @RequestBody @Valid ProductDTO product){
         product = productService.update(id, product);
         return ResponseEntity.ok(product);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         productService.delete(id);
         return ResponseEntity.noContent().build();
